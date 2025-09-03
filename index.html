@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Offering Registration System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Course Offering Registration System</h1>
+            <p>Northern University of Business and Technology Khulna</p>
+        </div>
+
+        <div class="toggle-buttons">
+            <button class="toggle-btn active" onclick="showSection('input')">Input Section</button>
+            <button class="toggle-btn" onclick="showSection('preview')">Preview Section</button>
+        </div>
+
+        <div class="main-content">
+            <div class="input-section" id="inputSection">
+                <form id="registrationForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="program">Program:</label>
+                            <select id="program" name="program" required onchange="loadCourses()">
+                                <option value="">Select Program</option>
+                                <option value="CSE">CSE</option>
+                                <option value="EEE">EEE</option>
+                                <option value="BBA">BBA</option>
+                                <option value="English">English</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="semester">Semester:</label>
+                            <select id="semester" name="semester" required onchange="loadCourses()">
+                                <option value="">Select Semester</option>
+                                <option value="1">1st Semester</option>
+                                <option value="2">2nd Semester</option>
+                                <option value="3">3rd Semester</option>
+                                <option value="4">4th Semester</option>
+                                <option value="5">5th Semester</option>
+                                <option value="6">6th Semester</option>
+                                <option value="7">7th Semester</option>
+                                <option value="8">8th Semester</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="studentName">Name of the Student:</label>
+                            <input type="text" id="studentName" name="studentName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="studentId">Student ID:</label>
+                            <input type="text" id="studentId" name="studentId" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="semesterSection">Semester + Section:</label>
+                            <input type="text" id="semesterSection" name="semesterSection" placeholder="e.g., 7B" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="advisorName">Name of Advisor:</label>
+                            <input type="text" id="advisorName" name="advisorName" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="guardianPhone">Guardian Contact No:</label>
+                            <input type="tel" id="guardianPhone" name="guardianPhone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="studentPhone">Student Contact No:</label>
+                            <input type="tel" id="studentPhone" name="studentPhone" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="bloodGroup">Blood Group:</label>
+                        <select id="bloodGroup" name="bloodGroup" required>
+                            <option value="">Select Blood Group</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                        </select>
+                    </div>
+
+                    <div class="course-table-section">
+                        <h3>Course Selection</h3>
+                        <button type="button" class="add-course-btn" onclick="addCourseRow()">+ Add Course</button>
+                        
+                        <table class="course-table" id="courseTable">
+                            <thead>
+                                <tr>
+                                    <th>SL</th>
+                                    <th>Course Code</th>
+                                    <th>Course Title</th>
+                                    <th>Select</th>
+                                    <th>Credit</th>
+                                    <th>Section</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="courseTableBody">
+                            </tbody>
+                        </table>
+                        
+                        <div class="total-credits">
+                            Total Credit Hours: <span id="totalCredits">0</span> / 22
+                            <div id="creditWarning" class="credit-warning" style="display: none;">
+                                Warning: Credit limit exceeded!
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="preview-section" id="previewSection" style="display: none;">
+                <div class="preview-header">
+                    <button class="download-btn" onclick="downloadPDF()">📥 Download PDF</button>
+                </div>
+                
+                <div class="a4-page" id="a4Page">
+                    <!-- Office Copy -->
+                    <div class="office-copy">
+                        <div class="university-header">
+                            <div class="university-logo">
+                                <div class="logo-circle">
+                                    <span>NUBT</span>
+                                </div>
+                            </div>
+                            <h2>NORTHERN UNIVERSITY</h2>
+                            <h3>OF BUSINESS & TECHNOLOGY, KHULNA</h3>
+                        </div>
+                        <div class="copy-label">Office Copy</div>
+                        
+                        <div class="form-title">
+                            <h4>Registration Request Form</h4>
+                        </div>
+                        
+                        <div class="info-section">
+                            <div class="info-left">
+                                <div class="info-item">
+                                    <span class="info-label">Semester:</span>
+                                    <span class="info-value" id="previewSemester1">Spring 2025</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Name of the Student:</span>
+                                    <span class="info-value" id="previewStudentName1"></span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Name of Advisor:</span>
+                                    <span class="info-value" id="previewAdvisorName1"></span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Blood Group:</span>
+                                    <span class="info-value" id="previewBloodGroup1"></span>
+                                </div>
+                            </div>
+                            <div class="info-right">
+                                <div class="info-item">
+                                    <span class="info-label">Program:</span>
+                                    <span class="info-value" id="previewProgram1"></span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">ID No:</span>
+                                    <span class="info-value" id="previewStudentId1"></span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Semester:</span>
+                                    <span class="info-value" id="previewSemesterSection1"></span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Guardian's Contact No:</span>
+                                    <span class="info-value" id="previewGuardianPhone1"></span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Student's Contact No:</span>
+                                    <span class="info-value" id="previewStudentPhone1"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <table class="preview-table">
+                            <thead>
+                                <tr>
+                                    <th>SL</th>
+                                    <th>Course Code</th>
+                                    <th>Course Title</th>
+                                    <th>Cross/✓</th>
+                                    <th>Credit</th>
+                                    <th>Section</th>
+                                </tr>
+                            </thead>
+                            <tbody id="previewCourseTable1">
+                            </tbody>
+                        </table>
+
+                        <div class="total-credits-preview">
+                            Total Credit Hours: <span id="previewTotalCredits1">0</span>
+                        </div>
+
+                        <div class="signatures">
+                            <div class="signature-box">
+                                <div class="signature-line"></div>
+                                <div class="signature-label">Student's Signature & Date</div>
+                            </div>
+                            <div class="signature-box">
+                                <div class="signature-line"></div>
+                                <div class="signature-label">ACAD Signature & Date</div>
+                            </div>
+                            <div class="signature-box">
+                                <div class="signature-line"></div>
+                                <div class="signature-label">Advisor's Signature & Date</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Student Copy -->
+                    <div class="student-copy">
+                        <div class="university-header">
+                            <div class="university-logo">
+                                <div class="logo-circle">
+                                    <span>NUBT</span>
+                                </div>
+                            </div>
+                            <h2>NORTHERN UNIVERSITY OF BUSINESS & TECHNOLOGY KHULNA</h2>
+                        </div>
+                        <div class="copy-label">Student Copy</div>
+                        
+                        <div class="form-title">
+                            <h4>Registration Request Form</h4>
+                        </div>
+                        
+                        <div class="info-section">
+                            <div class="info-left">
+                                <div class="info-item">
+                                    <span class="info-label">Semester:</span>
+                                    <span class="info-value" id="previewSemester2">Spring 2025</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Name of the Student:</span>
+                                    <span class="info-value" id="previewStudentName2"></span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Name of Advisor:</span>
+                                    <span class="info-value" id="previewAdvisorName2"></span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Blood Group:</span>
+                                    <span class="info-value" id="previewBloodGroup2"></span>
+                                </div>
+                            </div>
+                            <div class="info-right">
+                                <div class="info-item">
+                                    <span class="info-label">Program:</span>
+                                    <span class="info-value" id="previewProgram2"></span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">ID No:</span>
+                                    <span class="info-value" id="previewStudentId2"></span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Semester:</span>
+                                    <span class="info-value" id="previewSemesterSection2"></span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Guardian's Contact No:</span>
+                                    <span class="info-value" id="previewGuardianPhone2"></span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Student's Contact No:</span>
+                                    <span class="info-value" id="previewStudentPhone2"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <table class="preview-table">
+                            <thead>
+                                <tr>
+                                    <th>SL</th>
+                                    <th>Course Code</th>
+                                    <th>Course Title</th>
+                                    <th>Cross/✓</th>
+                                    <th>Credit</th>
+                                    <th>Section</th>
+                                </tr>
+                            </thead>
+                            <tbody id="previewCourseTable2">
+                            </tbody>
+                        </table>
+
+                        <div class="total-credits-preview">
+                            Total Credit Hours: <span id="previewTotalCredits2">0</span>
+                        </div>
+
+                        <div class="signatures">
+                            <div class="signature-box">
+                                <div class="signature-line"></div>
+                                <div class="signature-label">Student's Signature & Date</div>
+                            </div>
+                            <div class="signature-box">
+                                <div class="signature-line"></div>
+                                <div class="signature-label">ACAD Signature & Date</div>
+                            </div>
+                            <div class="signature-box">
+                                <div class="signature-line"></div>
+                                <div class="signature-label">Advisor's Signature & Date</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
